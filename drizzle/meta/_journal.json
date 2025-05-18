@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1746865529228,
+      "tag": "0000_burly_roland_deschain",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1746866121095,
+      "tag": "0001_dazzling_master_mold",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1746960556945,
+      "tag": "0002_medical_norrin_radd",
+      "breakpoints": true
+    }
+  ]
+}
