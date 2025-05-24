@@ -22,8 +22,8 @@ export default async function Home() {
           <div className="container">
             <h1 className="text-4xl font-bold mb-6">Welcome to ProfilePulse</h1>
             <p className="text-xl text-muted-foreground mb-8">
-              Analyze and roast your professional profiles for honest feedback
-              and improvement
+              Analyze and roast your professional profiles for llm based
+              feedback and improvement
             </p>
             <Link href="/login">
               <Button size="lg">
@@ -36,9 +36,7 @@ export default async function Home() {
         {/* Features Section */}
         <section id="features" className="py-20 px-2">
           <div className="container">
-            <h2 className="text-3xl font-bold text-center mb-12">
-              Our Features
-            </h2>
+            <h2 className="text-3xl font-bold text-center mb-12">Features</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <FeatureCard
                 icon={<FileText className="h-10 w-10" />}

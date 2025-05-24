@@ -18,11 +18,12 @@ import { toast } from "sonner";
 import { loginFormValidation } from "@/lib/validations";
 import { useAuth } from "@/provider/user-provider";
 import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 
 export default function LoginForm({ className, ...props }) {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState(null);
-  const { setUser } = useAuth();
+  const { setUser, refreshUser } = useAuth();
   const router = useRouter();
 
   async function handleLogin(event) {
@@ -37,25 +38,24 @@ export default function LoginForm({ className, ...props }) {
     const validResult = loginFormValidation.safeParse(data);
 
     if (!validResult.success) {
-      console.log(validResult.error.flatten().fieldErrors);
       setErrors(validResult.error.flatten().fieldErrors);
       return;
     }
 
-    setLoading(true);
+    setIsLoading(true);
     setErrors(null);
     const response = await login(data);
-    console.log("Login Result:", response);
 
     if (response?.error || !response?.success) {
       toast.error(`${response.error || "Login failed"}`);
     } else {
       // setUser(response.user);
+      refreshUser();
       toast.success("Login Successful");
       router.push("/dashboard");
     }
 
-    setLoading(false);
+    setIsLoading(false);
   }
 
   return (
@@ -110,8 +110,11 @@ export default function LoginForm({ className, ...props }) {
                   )}
                 </div>
               </div>
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Logging in..." : "Login"}
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading && <Loader className="h-4 w-4 animate-spin" />}
+                <span className="">
+                  {isLoading ? "Logging in..." : "Login"}
+                </span>
               </Button>
             </div>
             <div className="text-center text-sm">

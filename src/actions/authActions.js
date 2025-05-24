@@ -9,7 +9,6 @@ export async function login(values) {
   const { email, password } = values;
 
   const allUsers = await db.select().from(users);
-  console.log("All Users = ", allUsers);
 
   const existingUser = await db
     .select(users)
@@ -17,7 +16,6 @@ export async function login(values) {
     .where(eq(users.email, email))
     .limit(1);
 
-  console.log("Existing User = ", existingUser);
 
   if (existingUser.length === 0) {
     return {
@@ -69,14 +67,12 @@ export async function register(values) {
       .where(eq(users.email, email))
       .limit(1);
 
-    console.log("existingUser FROM DB  = ", existingUser);
 
     if (existingUser.length > 0) {
       return { error: "User already exists", success: false };
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("Hashed Password = ", hashedPassword);
 
     const newUser = await db
       .insert(users)

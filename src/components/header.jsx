@@ -14,10 +14,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, GalleryVerticalEnd } from "lucide-react";
+import { ChevronDown, GalleryVerticalEnd, Loader } from "lucide-react";
 
 export function Header() {
-  const { user, removeUser } = useAuth();
+  // const { user, removeUser } = useAuth();
+  const { user, isLoading, removeUser, refreshUser } = useAuth();
   const { clearData } = useData();
   const router = useRouter();
 
@@ -80,8 +81,15 @@ export function Header() {
           <div className="flex items-center space-x-2">
             <ThemeToggle />
             {user?.id ? (
-              <Button variant="destructive" onClick={handleLogout}>
-                Sign Out
+              <Button
+                variant="destructive"
+                onClick={handleLogout}
+                disabled={isLoading}
+              >
+                {isLoading && <Loader className="h-4 w-4 animate-spin" />}
+                <span className="">
+                  {isLoading ? "Logging out..." : "Logout"}
+                </span>
               </Button>
             ) : (
               <Link href="/login">

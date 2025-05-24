@@ -40,6 +40,13 @@ export function LeetCodeRoast({ onRoastGenerated }) {
 
       // Generate roast based on the data
       const response = await roastLeetCode(userData.data);
+
+      if (!response.success) {
+        toast.error(response.error);
+        setIsLoading(false);
+        return;
+      }
+
       await addResponseToDB({
         type: "leetcode_roast",
         platform: "leetcode",

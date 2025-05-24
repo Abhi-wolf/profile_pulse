@@ -34,13 +34,11 @@ export default async function DashboardPage() {
     data: { userDetails, roastCount, recentRoasts, roastTypeCounts },
   } = await getDashboardData();
 
-  console.log("recentRoasts = ", recentRoasts);
 
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex justify-between mb-4">
         <h1 className="text-2xl font-bold">Analysis History</h1>
-        <DashboardButton text="Dashboard" href="/dashboard" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -113,7 +111,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Recent Activity */}
-      <Card>
+      {/* <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle>Recent Activity</CardTitle>
@@ -134,25 +132,28 @@ export default async function DashboardPage() {
               recentRoasts.map((roast) => (
                 <div
                   key={roast.id}
-                  className="flex items-start space-x-2 p-2 rounded-lg border"
+                  className="flex items-start space-x-4 p-3 rounded-lg border"
                 >
-                  <div className="bg-muted rounded-full p-2">
-                    {roast.type === "github_roast" && (
-                      <Github className="h-5 w-5" />
-                    )}
-                    {roast.type === "leetcode_roast" && (
-                      <Code className="h-5 w-5" />
-                    )}
-                    {roast.type === "resume_roast" && (
-                      <FileUser className="h-5 w-5" />
-                    )}
-                    {roast.type === "resume_analysis" && (
-                      <FileTerminal className="h-5 w-5" />
-                    )}
+                  <div className=" rounded-full p-2 flex items-center justify-center h-12 w-12">
+                    <div className="bg-muted rounded-full p-2 flex items-center justify-center h-8 w-8">
+                      {roast.type === "github_roast" && (
+                        <Github className="h-5 w-5" />
+                      )}
+                      {roast.type === "leetcode_roast" && (
+                        <Code className="h-5 w-5" />
+                      )}
+                      {roast.type === "resume_roast" && (
+                        <FileUser className="h-5 w-5" />
+                      )}
+                      {roast.type === "resume_analysis" && (
+                        <FileTerminal className="h-5 w-5" />
+                      )}
+                    </div>
                   </div>
+
                   <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <div>
+                    <div className="flex  justify-between items-start">
+                      <div className=" flex flex-col gap-1">
                         <h4 className="font-semibold">
                           {roast.type === "github_roast"
                             ? "GitHub Roast"
@@ -187,6 +188,108 @@ export default async function DashboardPage() {
                       <div className="mt-2 flex justify-end">
                         <Link href={`/history/${roast.id}`}>
                           <Button variant="outline" size="sm">
+                            View Details
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </CardContent>
+      </Card> */}
+
+      <Card>
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div>
+            <CardTitle>Recent Activity</CardTitle>
+            <CardDescription>Your latest roasts</CardDescription>
+          </div>
+          <Link href="/history">
+            <Button size="sm" className="w-full sm:w-auto">
+              View All
+            </Button>
+          </Link>
+        </CardHeader>
+
+        <CardContent>
+          <div className="space-y-4">
+            {recentRoasts.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                No roasts found for the selected filter.
+              </div>
+            ) : (
+              recentRoasts.map((roast) => (
+                <div
+                  key={roast.id}
+                  className="flex flex-col sm:flex-row sm:items-start sm:space-x-4 space-y-2 sm:space-y-0 p-3 rounded-lg border"
+                >
+                  {/* Icon */}
+                  <div className="hidden md:flex self-center sm:self-start rounded-full p-2 items-center justify-center h-12 w-12">
+                    <div className="bg-muted rounded-full p-2 flex items-center justify-center h-8 w-8">
+                      {roast.type === "github_roast" && (
+                        <Github className="h-5 w-5" />
+                      )}
+                      {roast.type === "leetcode_roast" && (
+                        <Code className="h-5 w-5" />
+                      )}
+                      {roast.type === "resume_roast" && (
+                        <FileUser className="h-5 w-5" />
+                      )}
+                      {roast.type === "resume_analysis" && (
+                        <FileTerminal className="h-5 w-5" />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1">
+                    <div className="flex flex-col sm:flex-row  md:justify-between gap-4">
+                      <div className="flex flex-col gap-1">
+                        <h4 className="font-semibold">
+                          {roast.type === "github_roast"
+                            ? "GitHub Roast"
+                            : roast.type === "leetcode_roast"
+                            ? "LeetCode Roast"
+                            : roast.type === "resume_roast"
+                            ? "Resume Roast"
+                            : "Resume Analysis"}
+                        </h4>
+                        {roast?.platformUserName && (
+                          <p className="text-sm text-muted-foreground">
+                            Username:{" "}
+                            <span className="font-medium">
+                              {roast.platformUserName}
+                            </span>
+                          </p>
+                        )}
+                        <p className="flex items-center text-sm text-muted-foreground">
+                          <CalendarDays className="h-4 w-4 mr-1" />
+                          {new Date(roast.createdAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
+                          )}
+                        </p>
+                      </div>
+
+                      <div className="sm:mt-2 flex sm:justify-end">
+                        <Link
+                          href={`/history/${roast.id}`}
+                          className="w-full sm:w-auto"
+                        >
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full sm:w-auto"
+                          >
                             View Details
                           </Button>
                         </Link>

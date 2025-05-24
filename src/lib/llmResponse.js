@@ -1,6 +1,8 @@
 "use server";
 
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { getRequestsMadeToday } from "./queries";
+import { getSession } from "./session";
 
 const model = new ChatGoogleGenerativeAI({
   model: "gemini-2.0-flash",
@@ -26,8 +28,6 @@ const isResumeLike = (text) => {
 };
 
 export const checkResumeIsGoodForTheGob = async (text, jobdescription) => {
-  console.log("PDF TEXT = ", text);
-  console.log("JOB DESCRIPTION = ", jobdescription);
 
   if (!isResumeLike(text)) {
     return {
@@ -69,7 +69,6 @@ ${jobdescription}`,
       ],
     ]);
 
-    console.log("LLM RESPONSE = ", res.content);
 
     let rawResponse = res.content.trim();
 
@@ -83,7 +82,6 @@ ${jobdescription}`,
 
     const jsonString = jsonMatch[0];
 
-    console.log("Extracted JSON:", jsonString); // Debugging
 
     const structuredResponse = JSON.parse(jsonString);
 
@@ -203,6 +201,39 @@ ${maxBulletPoints > 4 ? "• [Optional fifth roast]\n" : ""}${
  * @returns {Promise<Object>} - The result of the roast generation
  */
 export async function roastResume(text, model) {
+  const session = await getSession();
+
+  if (!session) {
+    return {
+      error: "Unauthorized access",
+      success: false,
+    };
+  }
+  const userId = session.userId;
+
+  const res = await getRequestsMadeToday(userId);
+
+  if (!res.success) {
+    return {
+      error: res.error,
+      success: false,
+    };
+  }
+
+  if (res.error) {
+    return {
+      error: res.error,
+      success: false,
+    };
+  }
+
+  if (res.count >= 5) {
+    return {
+      error: "You have reached the maximum number of requests for today.",
+      success: false,
+    };
+  }
+
   return generateRoast({
     content: text,
     contentType: "resume",
@@ -218,6 +249,33 @@ export async function roastResume(text, model) {
  * @returns {Promise<Object>} - The result of the roast generation
  */
 export async function roastGitHub(githubData, model) {
+  const session = await getSession();
+
+  if (!session) {
+    return {
+      error: "Unauthorized access",
+      success: false,
+    };
+  }
+  const userId = session.userId;
+
+  const res = await getRequestsMadeToday(userId);
+
+  if (!res.success) {
+    return {
+      error: res.error,
+      success: false,
+    };
+  }
+
+  if (res.count >= 5) {
+    return {
+      error: "You have reached the maximum number of requests for today.",
+      success: false,
+    };
+  }
+  // console.log("Requests made today:", res.count);
+
   return generateRoast({
     content: githubData,
     contentType: "github",
@@ -233,6 +291,29 @@ export async function roastGitHub(githubData, model) {
  * @returns {Promise<Object>} - The result of the roast generation
  */
 export async function roastLeetCode(leetcodeData, model) {
+  const res = await getRequestsMadeToday();
+
+  if (!res.success) {
+    return {
+      error: res.error,
+      success: false,
+    };
+  }
+
+  if (res.error) {
+    return {
+      error: res.error,
+      success: false,
+    };
+  }
+
+  if (res.count >= 10) {
+    return {
+      error: "You have reached the maximum number of requests for today.",
+      success: false,
+    };
+  }
+
   return generateRoast({
     content: leetcodeData,
     contentType: "leetcode",

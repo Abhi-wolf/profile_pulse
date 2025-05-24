@@ -12,26 +12,20 @@ export default async function middleware(req) {
     return NextResponse.next();
   }
 
-  console.log("path = ", path);
   const isProtectedRoute = protectedRoutes.includes(path);
   const isPublicRoute = publicRoutes.includes(path);
 
   const cookie = cookies().get("session")?.value;
 
-  // console.log("cookie = ", cookie);
 
   const session = await decrypt(cookie);
-  // console.log("SESSION = ", session);
 
-  // console.log("isProtectedRoute = ", isProtectedRoute);
-  // console.log("isPublicRoute = ", isPublicRoute);
 
   if (isProtectedRoute && !session) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
   if (isPublicRoute && session?.userId) {
-    console.log("HELLO WORLD");
     return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
   }
 

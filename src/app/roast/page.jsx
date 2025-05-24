@@ -26,7 +26,6 @@ export default function Page() {
 
   // Enhanced handler for setting loading state and roast result
   const handleRoastResult = (res) => {
-    console.log("Roast result:", res);
 
     if (res.response.success) {
       if (res.type === "resume") {

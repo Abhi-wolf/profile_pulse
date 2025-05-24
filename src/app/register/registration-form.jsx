@@ -35,19 +35,16 @@ export function RegisterForm({ className, ...props }) {
     const lastName = formData.get("lastName");
     const data = { email, password, firstName, lastName };
 
-    console.log("Data:", data);
 
     const validResult = registerationFormValidation.safeParse(data);
 
     if (!validResult.success) {
-      console.log(validResult.error.flatten().fieldErrors);
       setErrors(validResult.error.flatten().fieldErrors);
       return;
     }
     setLoading(true);
     setErrors(null);
     const response = await register(data);
-    console.log("Sigup Result:", response);
 
     if (response?.error || !response?.success) {
       toast.error(`${response.error || "Sigup failed"}`);

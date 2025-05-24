@@ -6,7 +6,6 @@
  * @returns {Promise<Object|null>} - The user's LeetCode data or null if an error occurs
  */
 export const leetcodeData = async (username) => {
-  console.log("Fetching LeetCode data for username:", username);
 
   if (!username) return null;
 
@@ -61,7 +60,6 @@ export const leetcodeData = async (username) => {
       throw new Error(data.errors[0]?.message || "Unknown LeetCode API error");
     }
 
-    console.log("LeetCode data fetched successfully:", data);
     return {
       success: true,
       data: {
@@ -178,8 +176,8 @@ export const githubData = async (username = "Abhi-wolf") => {
       open_issues_count: repo.open_issues_count,
     }));
 
-    console.log("User data:", filteredUserData);
-    console.log("Repositories data:", filteredReposData);
+    // console.log("User data:", filteredUserData);
+    // console.log("Repositories data:", filteredReposData);
 
     // Return the filtered data
 

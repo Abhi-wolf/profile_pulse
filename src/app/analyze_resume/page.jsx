@@ -67,7 +67,6 @@ export default function ResumeAnalyzer() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("FILE = ", file);
 
     if (!file) {
       toast.error("Please upload your resume");
@@ -98,7 +97,6 @@ export default function ResumeAnalyzer() {
         return;
       }
 
-      console.log("LLM RESPONSE = ", response);
       setAiResumeAnalysizForJobDesc(response);
 
       await addResponseToDB({
@@ -118,7 +116,7 @@ export default function ResumeAnalyzer() {
 
   return (
     // <div className="w-[94%] md:w-[80%] mx-auto my-10 flex flex-col gap-6 mt-5">
-    <div className="container mx-auto py-2 md:py-6 flex flex-col gap-6">
+    <div className="container md:mx-auto py-2 md:py-6 flex flex-col gap-6 ">
       <div className="flex justify-between mb-4">
         <h1 className="text-2xl font-bold">Analysis History</h1>
         <DashboardButton text="Dashboard" href="/dashboard" />

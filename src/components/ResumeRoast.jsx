@@ -63,6 +63,12 @@ export function ResumeRoast({ onRoastGenerated }) {
       const response = await roastResume(extractedText);
       // console.log("AI Response:", response);
 
+      if (!response.success) {
+        toast.error(response.error);
+        setIsLoading(false);
+        return;
+      }
+
       await addResponseToDB({
         type: "resume_roast",
         aiResponse: response.response,

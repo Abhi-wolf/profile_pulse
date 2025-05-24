@@ -4,40 +4,47 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const initialState = {
   user: null,
+  isLoading: true,
   setUser: () => null,
   getUser: () => null,
   removeUser: () => {},
+  refreshUser: () => {},
 };
 
 const AuthProviderContext = createContext(initialState);
 
-export function AuthProvider({
-  children,
-  userStorageKey = "profile_pulse_user",
-  user: initialUser,
-}) {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Track if component is mounted
-  const [isMounted, setIsMounted] = useState(false);
+  // Fetch user data from server session
+  const fetchUserFromSession = async () => {
+    setIsLoading(true);
 
-  // Initialize user state from localStorage after mounting
-  useEffect(() => {
-    setIsMounted(true); // Mark component as mounted
-    const storedUser = localStorage.getItem(userStorageKey);
-    setUser(storedUser ? JSON.parse(storedUser) : initialUser || null);
-  }, [initialUser, userStorageKey]);
+    try {
+      const response = await fetch("/api/session");
+      const data = await response.json();
 
-  // Update localStorage when user changes
-  useEffect(() => {
-    if (isMounted) {
-      if (user) {
-        localStorage.setItem(userStorageKey, JSON.stringify(user));
+      if (response.ok && data.authenticated) {
+        setUser({
+          id: data.userId,
+          ...data.userData, // Include any additional user data from your session
+        });
       } else {
-        localStorage.removeItem(userStorageKey);
+        setUser(null);
       }
+    } catch (error) {
+      console.error("Failed to fetch user session:", error);
+      setUser(null);
+    } finally {
+      setIsLoading(false);
     }
-  }, [user, userStorageKey, isMounted]);
+  };
+
+  // Fetch user data on initial load
+  useEffect(() => {
+    fetchUserFromSession();
+  }, []);
 
   const getUser = () => user;
 
@@ -45,21 +52,36 @@ export function AuthProvider({
     setUser(newUser);
   };
 
-  const removeUser = () => {
-    setUser(null);
+  const removeUser = async () => {
+    try {
+      setIsLoading(true);
+      // Call your logout endpoint to clear the server-side session
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      setUser(null);
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  if (!isMounted) {
-    return null; // Or a loading spinner
-  }
+  const refreshUser = () => {
+    return fetchUserFromSession();
+  };
 
   return (
     <AuthProviderContext.Provider
       value={{
         user,
+        isLoading,
         getUser,
         setUser: handleUser,
         removeUser,
+        refreshUser,
       }}
     >
       {children}

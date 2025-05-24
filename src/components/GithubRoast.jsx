@@ -39,6 +39,12 @@ export function GitHubRoast({ onRoastGenerated }) {
 
       const response = await roastGitHub(userData.data);
 
+      if (!response.success) {
+        toast.error(response.error);
+        setIsLoading(false);
+        return;
+      }
+
       await addResponseToDB({
         type: "github_roast",
         platform: "github",

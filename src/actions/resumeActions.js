@@ -1,7 +1,8 @@
 "use server";
 
-import { db } from "@/db";
+import { and, db, eq, sql } from "@/db";
 import { roast } from "@/db/schema/userSchema";
+import { invalidateRequestsCache } from "@/lib/queries";
 import { getSession } from "@/lib/session";
 
 export async function addResponseToDB(values) {
@@ -34,7 +35,8 @@ export async function addResponseToDB(values) {
       userId: session.userId,
     });
 
-    console.log(response);
+
+    invalidateRequestsCache();
 
     return {
       error: null,

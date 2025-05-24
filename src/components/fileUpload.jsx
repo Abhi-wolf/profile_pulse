@@ -16,7 +16,6 @@ export function FileUpload({ setFile, file, isLoading, handlePdfUpload }) {
   const [error, setError] = useState(null);
 
   const handleFile = (e) => {
-    console.log(e.target.files?.[0]);
 
     const size = e.target.files?.[0].size;
 
