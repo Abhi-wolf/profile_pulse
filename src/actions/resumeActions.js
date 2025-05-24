@@ -4,6 +4,7 @@ import { and, db, eq, sql } from "@/db";
 import { roast } from "@/db/schema/userSchema";
 import { invalidateRequestsCache } from "@/lib/queries";
 import { getSession } from "@/lib/session";
+const apiURL = "https://feedlytic.vercel.app/api/events";
 
 export async function addResponseToDB(values) {
   const session = await getSession();
@@ -35,6 +36,24 @@ export async function addResponseToDB(values) {
       userId: session.userId,
     });
 
+    const eventData = {
+      eventName: `${type}`,    // required
+      domain: "profile-pulse-mu.vercel.app",  // required
+      eventDescription: `${type}  ${platformUserName}`, // optional
+    };
+
+    console.log("EVENT DATA = ", eventData);
+
+
+    const res=await fetch(apiURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.FEEDLYTIC_API_KEY}`,
+      body: JSON.stringify(eventData), 
+    }});
+
+    console.log("FEEDLYTIC RESPONSE = ", res)
 
     invalidateRequestsCache();
 

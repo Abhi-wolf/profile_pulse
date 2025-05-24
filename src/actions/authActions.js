@@ -5,10 +5,42 @@ import { users } from "@/db/schema/userSchema";
 import { createSession, deleteSession } from "@/lib/session";
 import bcrypt, { hash } from "bcrypt";
 
+const apiURL = "https://feedlytic.vercel.app/api/events";
+
+/**
+const headers = {
+  "Content-Type": "application/json",
+  Authorization: "Bearer {apiKey}",
+};
+const eventData = {
+  eventName: "",    // required
+  domain: "",  // required
+  eventDescription: "", // optional
+};
+
+// using axios
+const sendRequest = async () => {
+  axios
+    .post(apiURL, eventData, { headers })
+    .then()
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+};
+
+// using fetch
+const response = await fetch(apiURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer {apiKEY}",
+      body: JSON.stringify(eventData), 
+    });
+ */
+
 export async function login(values) {
   const { email, password } = values;
 
-  const allUsers = await db.select().from(users);
 
   const existingUser = await db
     .select(users)
@@ -90,6 +122,20 @@ export async function register(values) {
       });
 
     await createSession(newUser[0].id);
+
+    const eventData = {
+      eventName: "User Registered",    // required
+      domain: "profile-pulse-mu.vercel.app",  // required
+      eventDescription: `User ${email} registered successfully`, // optional
+    };
+
+    const response = await fetch(apiURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.FEEDLYTIC_API_KEY}`,
+      body: JSON.stringify(eventData), 
+    }});
 
     return {
       error: null,
