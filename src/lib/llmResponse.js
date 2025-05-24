@@ -28,6 +28,7 @@ const isResumeLike = (text) => {
 };
 
 export const checkResumeIsGoodForTheGob = async (text, jobdescription) => {
+  const session = await getSession();
 
   if (!isResumeLike(text)) {
     return {
@@ -37,6 +38,38 @@ export const checkResumeIsGoodForTheGob = async (text, jobdescription) => {
       gaps: [],
       recommendations: [],
       overall_feedback: "The uploaded file does not seem to contain a resume.",
+    };
+  }
+
+
+  if (!session) {
+    return {
+      error: "Unauthorized access",
+      success: false,
+    };
+  }
+  const userId = session.userId;
+
+  const res = await getRequestsMadeToday(userId);
+
+  if (!res.success) {
+    return {
+      error: res.error,
+      success: false,
+    };
+  }
+
+  if (res.error) {
+    return {
+      error: res.error,
+      success: false,
+    };
+  }
+
+  if (res.count >= 10) {
+    return {
+      error: "You have reached the maximum number of requests for today.",
+      success: false,
     };
   }
 
@@ -227,7 +260,7 @@ export async function roastResume(text, model) {
     };
   }
 
-  if (res.count >= 5) {
+  if (res.count >= 10) {
     return {
       error: "You have reached the maximum number of requests for today.",
       success: false,
@@ -268,7 +301,7 @@ export async function roastGitHub(githubData, model) {
     };
   }
 
-  if (res.count >= 5) {
+  if (res.count >= 10) {
     return {
       error: "You have reached the maximum number of requests for today.",
       success: false,
