@@ -7,36 +7,8 @@ import bcrypt, { hash } from "bcrypt";
 
 const apiURL = "https://feedlytic.vercel.app/api/events";
 
-/**
-const headers = {
-  "Content-Type": "application/json",
-  Authorization: "Bearer {apiKey}",
-};
-const eventData = {
-  eventName: "",    // required
-  domain: "",  // required
-  eventDescription: "", // optional
-};
 
-// using axios
-const sendRequest = async () => {
-  axios
-    .post(apiURL, eventData, { headers })
-    .then()
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-};
 
-// using fetch
-const response = await fetch(apiURL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer {apiKEY}",
-      body: JSON.stringify(eventData), 
-    });
- */
 
 export async function login(values) {
   const { email, password } = values;
@@ -134,8 +106,11 @@ export async function register(values) {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.FEEDLYTIC_API_KEY}`,
+      },
       body: JSON.stringify(eventData), 
-    }});
+    });
+
+    console.log("FEEDLYTIC RESPONSE = ", response)
 
     return {
       error: null,

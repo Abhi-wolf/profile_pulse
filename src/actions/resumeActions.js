@@ -50,8 +50,9 @@ export async function addResponseToDB(values) {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.FEEDLYTIC_API_KEY}`,
+      },
       body: JSON.stringify(eventData), 
-    }});
+    });
 
     console.log("FEEDLYTIC RESPONSE = ", res)
 
