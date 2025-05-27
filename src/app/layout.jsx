@@ -5,16 +5,15 @@ import { Header } from "@/components/header";
 import { Toaster } from "sonner";
 import Providers from "@/provider";
 import Script from "next/script";
+import FeedbackForm from "@/components/FeedbackForm";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "ProfilePulse",
-  description: "ProfilePulse | Analyze and roast your professional profiles for llm based feedback and improvement",
+  description:
+    "ProfilePulse | Analyze and roast your professional profiles for llm based feedback and improvement",
 };
-
-
-
 
 export default function RootLayout({ children }) {
   return (
@@ -30,6 +29,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <Header />
           <div className="container mx-auto mt-32 md:mt-16">{children}</div>
+          <FeedbackForm />
         </Providers>
 
         <Toaster position="top-center" />
