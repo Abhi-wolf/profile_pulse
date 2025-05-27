@@ -19,21 +19,19 @@ import {
 import DashboardButton from "@/components/DashboardButton";
 import { getDashboardData } from "@/lib/queries";
 import Link from "next/link";
-
-// Mock data based on the provided information
-const userData = {
-  id: "0d6c078b-9c59-4be9-bd3d-e57dff94f6aa",
-  email: "abhirock@email.com",
-  firstName: "Abhijeet",
-  lastName: "Kumar",
-  role: "user",
-};
+import { getSession } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
+  const session = await getSession();
+
   const {
     data: { userDetails, roastCount, recentRoasts, roastTypeCounts },
   } = await getDashboardData();
 
+  if (!session || !session?.userId) {
+    redirect("/login");
+  }
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -52,20 +50,20 @@ export default async function DashboardPage() {
             <div className="flex flex-col items-center space-y-4">
               <Avatar className="h-24 w-24">
                 <AvatarImage
-                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${userDetails.firstName} ${userDetails.lastName}`}
-                  alt={`${userDetails.firstName} ${userDetails.lastName}`}
+                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${userDetails?.firstName} ${userDetails?.lastName}`}
+                  alt={`${userDetails?.firstName} ${userDetails?.lastName}`}
                 />
                 <AvatarFallback>
-                  {userDetails.firstName.charAt(0)}
-                  {userDetails.lastName.charAt(0)}
+                  {userDetails?.firstName.charAt(0)}
+                  {userDetails?.lastName.charAt(0)}
                 </AvatarFallback>
               </Avatar>
               <div className="text-center">
                 <h3 className="text-xl font-semibold">
-                  {userDetails.firstName} {userDetails.lastName}
+                  {userDetails?.firstName} {userDetails?.lastName}
                 </h3>
-                <p className="text-muted-foreground">{userDetails.email}</p>
-                <Badge className="mt-2">{userDetails.role}</Badge>
+                <p className="text-muted-foreground">{userDetails?.email}</p>
+                <Badge className="mt-2">{userDetails?.role}</Badge>
               </div>
             </div>
           </CardContent>

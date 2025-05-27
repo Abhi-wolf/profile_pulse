@@ -17,11 +17,9 @@ import { decrypt } from "./lib/session";
 
 //   const cookie = cookies().get("session")?.value;
 
-
 //   const session = await decrypt(cookie);
 
 //   console.log("SESSION = ", session);
-
 
 //   if (isProtectedRoute && !session) {
 //     return NextResponse.redirect(new URL("/login", req.nextUrl));
@@ -35,17 +33,17 @@ import { decrypt } from "./lib/session";
 // }
 
 const protectedRoutes = ["/dashboard"];
-const publicRoutes = ["/","/login", "/register"];
-const authRoutes=["/login","/register"]
+const publicRoutes = ["/", "/login", "/register"];
+const authRoutes = ["/login", "/register"];
 
 export default async function middleware(req) {
   const path = req.nextUrl.pathname;
 
   if (
-    path.startsWith("/_next") || 
+    path.startsWith("/_next") ||
     path.startsWith("/api/auth") ||
     path.startsWith("/_vercel") ||
-    path.includes(".")  // Skip files with extensions (images, favicons, etc.)
+    path.includes(".") // Skip files with extensions (images, favicons, etc.)
   ) {
     return NextResponse.next();
   }
@@ -56,26 +54,23 @@ export default async function middleware(req) {
 
   const cookie = cookies().get("session")?.value;
 
-
   const session = await decrypt(cookie);
 
-  console.log("SESSION = ", session);
+  // console.log("SESSION = ", session);
 
-
-  if (!session ||!session?.userId) {
-    if(isPublicRoute) return NextResponse.next();
+  if (!session || !session?.userId) {
+    if (isPublicRoute) return NextResponse.next();
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
   if (session?.userId) {
-    if(isAuthRoute) return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
+    if (isAuthRoute)
+      return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
     return NextResponse.next();
   }
 
-
   return NextResponse.next();
 }
-
 
 export const config = {
   matcher: [
@@ -87,6 +82,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * - Any files with extensions (images, etc.)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)',
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
   ],
 };
