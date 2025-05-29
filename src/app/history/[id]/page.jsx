@@ -7,13 +7,9 @@ import { Button } from "@/components/ui/button";
 import { getRoastById } from "@/lib/queries";
 
 export default async function RoastDetailsPage({ params }) {
-  //   const data = await db.query.roast.findFirst({
-  //     where: eq(roast.id, params.id),
-  //   });
+  const res = await getRoastById(params.id);
 
-  const data = await getRoastById(params.id);
-
-  if (!data) {
+  if (!res.success) {
     notFound();
   }
 
@@ -44,47 +40,47 @@ export default async function RoastDetailsPage({ params }) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            {getTypeIcon(data.type)}
-            <span className="capitalize">{data.type}</span>
+            {getTypeIcon(res?.data?.type)}
+            <span className="capitalize">{res?.data?.type}</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {data.platformUserName && (
+          {res?.data?.platformUserName && (
             <div>
               <p className="text-sm text-muted-foreground">Platform Username</p>
-              <p className="font-medium">{data.platformUserName}</p>
+              <p className="font-medium">{res?.data?.platformUserName}</p>
             </div>
           )}
 
-          {data.platform && (
+          {res?.data?.platform && (
             <div>
               <p className="text-sm text-muted-foreground">Platform</p>
-              <p className="font-medium capitalize">{data.platform}</p>
+              <p className="font-medium capitalize">{res?.data?.platform}</p>
             </div>
           )}
 
           <div>
             <p className="text-sm text-muted-foreground">Job Description</p>
-            <p className="font-medium">{data.jobDescription || "N/A"}</p>
+            <p className="font-medium">{res?.data?.jobDescription || "N/A"}</p>
           </div>
 
           {/* <div>
-            <p className="text-sm text-muted-foreground">Extracted Data</p>
+            <p className="text-sm text-muted-foreground">Extracted data?</p>
             <pre className="bg-muted p-3 rounded text-sm whitespace-pre-wrap">
-              {data.extractedData || "N/A"}
+              {data?.extracteddata? || "N/A"}
             </pre>
           </div> */}
 
           <div>
             <p className="text-sm text-muted-foreground">AI Response</p>
             <pre className="bg-muted p-3 rounded text-sm whitespace-pre-wrap">
-              {data.aiResponse || "N/A"}
+              {res?.data?.aiResponse || "N/A"}
             </pre>
           </div>
 
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="h-4 w-4" />
-            <span>{new Date(data.createdAt).toLocaleString()}</span>
+            <span>{new Date(res?.data?.createdAt).toLocaleString()}</span>
           </div>
         </CardContent>
       </Card>

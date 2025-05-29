@@ -76,7 +76,7 @@ export const getFilteredRoasts = async (filters) => {
       .select({ count: count() })
       .from(roast)
       .where(and(...conditions));
-    
+
     const countResult = await countQuery;
     const totalItems = countResult[0]?.count || 0;
     const totalPages = Math.ceil(totalItems / limit);
@@ -102,24 +102,38 @@ export const getFilteredRoasts = async (filters) => {
     };
   } catch (error) {
     console.error("Error fetching filtered roasts:", error);
-    return { 
-      success: false, 
-      items: [], 
+    return {
+      success: false,
+      items: [],
       error: "Failed to fetch data",
       totalItems: 0,
       totalPages: 0,
       currentPage: 1,
-      limit: 10
+      limit: 10,
     };
   }
 };
 
 export const getRoastById = async (id) => {
-  return await db
+  const session = await getSession();
+
+  if (!session) {
+    return {
+      success: false,
+      error: "Unauthorized",
+    };
+  }
+
+  const data = await db
     .select()
     .from(roast)
     .where(eq(roast.id, id))
     .then((data) => data[0]);
+
+  return {
+    success: true,
+    data,
+  };
 };
 
 export const getDashboardData = async () => {
@@ -231,7 +245,6 @@ export const getRequestsMadeToday = unstable_cache(
             lt(roast.createdAt, startOfTomorrowUTC)
           )
         );
-
 
       return {
         success: true,
