@@ -108,97 +108,6 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
-      {/* Recent Activity */}
-      {/* <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Your latest roasts</CardDescription>
-          </div>
-
-          <Link href="/history">
-            <Button size="sm">View All</Button>
-          </Link>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {recentRoasts.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
-                No roasts found for the selected filter.
-              </div>
-            ) : (
-              recentRoasts.map((roast) => (
-                <div
-                  key={roast.id}
-                  className="flex items-start space-x-4 p-3 rounded-lg border"
-                >
-                  <div className=" rounded-full p-2 flex items-center justify-center h-12 w-12">
-                    <div className="bg-muted rounded-full p-2 flex items-center justify-center h-8 w-8">
-                      {roast.type === "github_roast" && (
-                        <Github className="h-5 w-5" />
-                      )}
-                      {roast.type === "leetcode_roast" && (
-                        <Code className="h-5 w-5" />
-                      )}
-                      {roast.type === "resume_roast" && (
-                        <FileUser className="h-5 w-5" />
-                      )}
-                      {roast.type === "resume_analysis" && (
-                        <FileTerminal className="h-5 w-5" />
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex-1">
-                    <div className="flex  justify-between items-start">
-                      <div className=" flex flex-col gap-1">
-                        <h4 className="font-semibold">
-                          {roast.type === "github_roast"
-                            ? "GitHub Roast"
-                            : roast.type === "leetcode_roast"
-                            ? "LeetCode Roast"
-                            : roast.type === "resume_roast"
-                            ? "Resume Roast"
-                            : "Resume Analysis"}
-                        </h4>
-                        {roast?.platformUserName && (
-                          <p className="text-sm text-muted-foreground">
-                            Username:{" "}
-                            <span className="font-medium">
-                              {roast.platformUserName}
-                            </span>
-                          </p>
-                        )}
-                        <p className="flex items-center text-sm text-muted-foreground">
-                          <CalendarDays className="h-4 w-4 mr-1" />
-                          {new Date(roast.createdAt).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }
-                          )}
-                        </p>
-                      </div>
-                      <div className="mt-2 flex justify-end">
-                        <Link href={`/history/${roast.id}`}>
-                          <Button variant="outline" size="sm">
-                            View Details
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </CardContent>
-      </Card> */}
-
       <Card>
         <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
@@ -278,7 +187,7 @@ export default async function DashboardPage() {
                         </p>
                       </div>
 
-                      <div className="sm:mt-2 flex sm:justify-end">
+                      {/* <div className="sm:mt-2 flex sm:justify-end">
                         <Link
                           href={`/history/${roast.id}`}
                           className="w-full sm:w-auto"
@@ -291,7 +200,7 @@ export default async function DashboardPage() {
                             View Details
                           </Button>
                         </Link>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

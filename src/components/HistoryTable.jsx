@@ -60,7 +60,6 @@
 //   );
 // }
 
-
 import {
   Table,
   TableBody,
@@ -90,7 +89,7 @@ export default function HistoryTable({ data }) {
     );
   }
 
-  const startItem = ((data.currentPage - 1) * data.limit) + 1;
+  const startItem = (data.currentPage - 1) * data.limit + 1;
   const endItem = Math.min(data.currentPage * data.limit, data.totalItems);
 
   return (
@@ -108,7 +107,7 @@ export default function HistoryTable({ data }) {
             <TableHead>Type</TableHead>
             <TableHead>Username</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead>Actions</TableHead>
+            {/* <TableHead>Actions</TableHead> */}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -127,13 +126,13 @@ export default function HistoryTable({ data }) {
                 {item.platformUserName ? item.platformUserName : "-"}
               </TableCell>
               <TableCell>{new Date(item.createdAt).toLocaleString()}</TableCell>
-              <TableCell>
+              {/* <TableCell>
                 <Link href={`/history/${item.id}`}>
                   <Button size="sm" variant="outline">
                     View
                   </Button>
                 </Link>
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           ))}
         </TableBody>
