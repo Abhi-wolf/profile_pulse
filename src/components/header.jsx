@@ -44,7 +44,7 @@ export function Header() {
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <GalleryVerticalEnd className="size-4" />
             </div>
-            Profile Pulse.
+            Scan Score
           </Link>
 
           <nav className="hidden md:flex items-center space-x-6">

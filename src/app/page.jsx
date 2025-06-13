@@ -20,7 +20,8 @@ export default async function Home() {
         {/* Hero Section */}
         <section className="py-20 text-center">
           <div className="container">
-            <h1 className="text-4xl font-bold mb-6">Welcome to ProfilePulse</h1>
+            {/* <h1 className="text-4xl font-bold mb-6">Welcome to ProfilePulse</h1> */}
+            <h1 className="text-4xl font-bold mb-6">Welcome to Scan Score</h1>
             <p className="text-xl text-muted-foreground mb-8">
               Analyze and roast your professional profiles for llm based
               feedback and improvement
@@ -65,9 +66,10 @@ export default async function Home() {
         {/* About Section */}
         <section id="about" className="py-20">
           <div className="container text-center">
-            <h2 className="text-3xl font-bold mb-6">About ProfilePulse</h2>
+            {/* <h2 className="text-3xl font-bold mb-6">About ProfilePulse</h2> */}
+            <h2 className="text-3xl font-bold mb-6">About Scan Score</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              ProfilePulse is your go-to platform for honest, constructive
+              Scan Score is your go-to platform for honest, constructive
               feedback on your professional profiles. We use advanced AI to
               analyze and &quot;roast&quot; your resume, GitHub, and LeetCode
               profiles, helping you stand out in the competitive job market.
@@ -79,10 +81,10 @@ export default async function Home() {
         <section className="py-20 bg-primary text-primary-foreground">
           <div className="container text-center">
             <h2 className="text-3xl font-bold mb-6">
-              Ready to Pulse Up Your Profile?
+              Ready to Scan Up Your Profile?
             </h2>
             <p className="text-xl mb-8">
-              Join ProfilePulse today and take your professional presence to the
+              Join Scan Score today and take your professional presence to the
               next level.
             </p>
             <Link href="/login">

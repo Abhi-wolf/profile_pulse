@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="py-6 border-t mt-2">
       <div className="container flex flex-col items-center justify-around space-y-4 md:flex-row md:space-y-0">
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} ProfilePulse. All rights reserved.
+          © {new Date().getFullYear()} Scan Score. All rights reserved.
         </p>
         {/* <nav className="flex space-x-4">
           <Link
@@ -28,7 +28,7 @@ export function Footer() {
           </Link>
         </nav> */}
 
-        <div className="flex space-x-1 text-muted-foreground text-sm">
+        {/* <div className="flex space-x-1 text-muted-foreground text-sm">
           Made with ❤️ by{" "}
           <Link
             href="https://portfolio-ruby-rho-64.vercel.app/"
@@ -38,7 +38,7 @@ export function Footer() {
             {" "}
             @Abhijeet
           </Link>
-        </div>
+        </div> */}
       </div>
     </footer>
   );
