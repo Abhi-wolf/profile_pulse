@@ -35,7 +35,6 @@ export function RegisterForm({ className, ...props }) {
     const lastName = formData.get("lastName");
     const data = { email, password, firstName, lastName };
 
-
     const validResult = registerationFormValidation.safeParse(data);
 
     if (!validResult.success) {
@@ -60,7 +59,7 @@ export function RegisterForm({ className, ...props }) {
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome To Profile Pulse</CardTitle>
+          <CardTitle className="text-xl">Welcome To Scan Score</CardTitle>
           <CardDescription>
             Register with your Name, Email and Password
           </CardDescription>
